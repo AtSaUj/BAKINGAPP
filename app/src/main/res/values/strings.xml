@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">BakingApp</string>
+    <string name="Rasgulla">RASGULLA</string>
+    <string name="ingredients_head">Ingredients</string>
+</resources>

@@ -18,17 +18,22 @@ import butterknife.ButterKnife;
  */
 
 class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeViewHolder> {
-    private Context mContext;
     public ArrayList<Recipes> mRecipes;
+    final private ListItemClickListener mListItemClickListener;
+
+
+    public interface ListItemClickListener {
+        void onListItemClick(int clickedItemIndex);
+    }
 
     RecipeAdapter(Context context, ArrayList<Recipes> arrayList) {
-        mContext = context;
+        mListItemClickListener = (ListItemClickListener) context;
         mRecipes = arrayList;
     }
 
     @Override
     public RecipeViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new RecipeViewHolder(LayoutInflater.from(mContext)
+        return new RecipeViewHolder(LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.card_recycler_view_item, parent, false));
     }
 
@@ -48,7 +53,7 @@ class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeViewHolder>
         notifyDataSetChanged();
     }
 
-    public class RecipeViewHolder extends RecyclerView.ViewHolder {
+    public class RecipeViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         @BindView(R.id.title)
         TextView title;
         @BindView(R.id.card_view)
@@ -57,6 +62,13 @@ class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeViewHolder>
         public RecipeViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
+            itemView.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View view) {
+            int position = getAdapterPosition();
+            mListItemClickListener.onListItemClick(position);
         }
     }
 }

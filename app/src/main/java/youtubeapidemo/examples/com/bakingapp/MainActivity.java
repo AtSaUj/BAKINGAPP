@@ -1,11 +1,9 @@
 package youtubeapidemo.examples.com.bakingapp;
 
 import android.app.ProgressDialog;
-import android.graphics.drawable.Drawable;
+import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -26,13 +24,13 @@ import butterknife.ButterKnife;
 
 /* Activity displays all available Recipies*/
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements RecipeAdapter.ListItemClickListener {
     private static final String TAG = MainActivity.class.getSimpleName();
     private ProgressDialog progressDialog;
     @BindView(R.id.recycler_view)
     RecyclerView recyclerView;
     ArrayList<Recipes> arrayList;
-    ArrayList<Recipes.Ingredients> arrayList2;
+    ArrayList<Recipes.Ingredients> arrayList2ingredientsArrayList;
     RecipeAdapter recipeAdapter;
 
     @Override
@@ -44,16 +42,12 @@ public class MainActivity extends AppCompatActivity {
         progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
         progressDialog.setCancelable(false);
         progressDialog.setIndeterminate(false);
+        progressDialog.setTitle(getString(R.string.please_wait));
         progressDialog.show();
         makeJsonArrayRequest();
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(linearLayoutManager);
-        Drawable dividerDrawable = ContextCompat.getDrawable(this, R.drawable.item_separator);
-        DividerItemDecoration mDividerItemDecoration = new DividerItemDecoration(dividerDrawable);
-        //        = new DividerItemDecoration(recyclerView.getContext(),
-          //      linearLayoutManager.getOrientation());
-      //  mDividerItemDecoration.setDrawable(R.g);
-        recyclerView.addItemDecoration(mDividerItemDecoration);
+       // recyclerView.addItemDecoration(mDividerItemDecoration);
         recipeAdapter = new RecipeAdapter(this, arrayList);
         recyclerView.setAdapter(recipeAdapter);
     }
@@ -63,7 +57,7 @@ public class MainActivity extends AppCompatActivity {
      */
     private void makeJsonArrayRequest() {
         arrayList = new ArrayList<>();
-        arrayList2 = new ArrayList<>();
+        arrayList2ingredientsArrayList = new ArrayList<>();
         String mUrlBaking = "https://go.udacity.com/android-baking-app-json";
         JsonArrayRequest req = new JsonArrayRequest(mUrlBaking,
                 new Response.Listener<JSONArray>() {
@@ -84,15 +78,14 @@ public class MainActivity extends AppCompatActivity {
                                     ingredientsRequirent = ing.getInt("quantity") +
                                             ing.getString("measure") +
                                             ing.getString("ingredient");
-                                    arrayList2.add(new Recipes.Ingredients(ingredientsRequirent));
+                                    arrayList2ingredientsArrayList.add(new Recipes.Ingredients(ingredientsRequirent));
                                 }/*
 
                                 JSONArray steps = person.getJSONArray("Steps");
                                 for (int j = 0; j < ingredients.length(); j++) {
-
                                 }
 */
-                                arrayList.add(new Recipes(id, dish_Name, servings));
+                                arrayList.add(new Recipes(id, dish_Name, servings,arrayList2ingredientsArrayList));
                             }
 
                             progressDialog.dismiss();
@@ -112,4 +105,16 @@ public class MainActivity extends AppCompatActivity {
 
         MySingleton.getInstance(this).addToRequestQueue(req);
     }
+
+    @Override
+    public void onListItemClick(int clickedItemIndex) {
+        Intent intent = new Intent(MainActivity.this,IngredientActivity.class);
+        Bundle b = new Bundle();
+        b.putInt(getString(R.string.POSITION_KEY), clickedItemIndex);
+        b.putParcelableArrayList(getString(R.string.LIST_KEY), arrayList);
+        intent.putExtras(b);
+        startActivity(intent);
+    }
+
+
 }

@@ -6,6 +6,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 
 import java.util.ArrayList;
 
@@ -35,7 +36,7 @@ public class IngredientActivity extends AppCompatActivity {
           arrayList = extras.getParcelableArrayList(getString(R.string.LIST_KEY));
         }
         int position = extras.getInt(getString(R.string.POSITION_KEY), getResources().getInteger(R.integer.POSITION_DEFAULT));
-          // Log.d(TAG,arrayList.get(position).get);
+        Log.d(TAG,arrayList.get(position)+"");
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         ingredientAdapter = new IngredientAdapter(this, new ArrayList<Recipes.Ingredients>());

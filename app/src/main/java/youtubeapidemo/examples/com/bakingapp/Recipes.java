@@ -3,6 +3,9 @@ package youtubeapidemo.examples.com.bakingapp;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by 1515012 on 09-07-2017.
  */
@@ -10,17 +13,21 @@ import android.os.Parcelable;
 public class Recipes implements Parcelable {
     private int id, servings;
     private String dish_Name;
+    private List<Ingredients> ingredientsArrayList;
 
-    public Recipes(int id, String dish_name, int servings) {
+    public Recipes(int id, String dish_name, int servings, List<Ingredients> ingredientsArrayList) {
         this.id = id;
         this.dish_Name = dish_name;
         this.servings = servings;
+        this.ingredientsArrayList=ingredientsArrayList;
     }
 
     protected Recipes(Parcel in) {
         id = in.readInt();
         servings = in.readInt();
         dish_Name = in.readString();
+        this.ingredientsArrayList = new ArrayList<>();
+        in.readTypedList(ingredientsArrayList, Ingredients.CREATOR);
     }
 
     public static final Creator<Recipes> CREATOR = new Creator<Recipes>() {
@@ -57,6 +64,7 @@ public class Recipes implements Parcelable {
         parcel.writeInt(id);
         parcel.writeInt(servings);
         parcel.writeString(dish_Name);
+        parcel.writeTypedList(ingredientsArrayList);
     }
 
 

@@ -63,29 +63,37 @@ public class MainActivity extends AppCompatActivity implements RecipeAdapter.Lis
                 new Response.Listener<JSONArray>() {
                     @Override
                     public void onResponse(JSONArray response) {
-                        String ingredientsRequirent;
+                        String ingredientsRequirent = null;
                         try {
+
                             for (int i = 0; i < response.length(); i++) {
                                 JSONObject person = (JSONObject) response.get(i);
                                 String dish_Name = person.getString("name");
                                 int id = person.getInt("id");
-                                //*JSONObject phone = person.getJSONObject("phone");*//*
-                                //  String ingredients = person.getString("ingredients");
                                 int servings = person.getInt("servings");
                                 JSONArray ingredients = person.getJSONArray("ingredients");
+                           //     Log.i(TAG,response.length()+"i="+i);
                                 for (int j = 0; j < ingredients.length(); j++) {
-                                    JSONObject ing = (JSONObject) ingredients.get(i);
+                                    JSONObject ing = (JSONObject) ingredients.get(j);
+
                                     ingredientsRequirent = ing.getInt("quantity") +
                                             ing.getString("measure") +
                                             ing.getString("ingredient");
-                                    arrayList2ingredientsArrayList.add(new Recipes.Ingredients(ingredientsRequirent));
-                                }/*
 
+                              //      Log.i(TAG,ingredients.length()+"j="+j);
+                              //      Log.i(TAG,ingredientsRequirent);
+                                    arrayList2ingredientsArrayList.add(new Recipes
+                                            .Ingredients(ingredientsRequirent));
+                                }
+
+
+/*
                                 JSONArray steps = person.getJSONArray("Steps");
                                 for (int j = 0; j < ingredients.length(); j++) {
                                 }
 */
-                                arrayList.add(new Recipes(id, dish_Name, servings,arrayList2ingredientsArrayList));
+                                arrayList.add(new Recipes(id, dish_Name, servings,
+                                        arrayList2ingredientsArrayList));
                             }
 
                             progressDialog.dismiss();
@@ -111,7 +119,7 @@ public class MainActivity extends AppCompatActivity implements RecipeAdapter.Lis
         Intent intent = new Intent(MainActivity.this,IngredientActivity.class);
         Bundle b = new Bundle();
         b.putInt(getString(R.string.POSITION_KEY), clickedItemIndex);
-        b.putParcelableArrayList(getString(R.string.LIST_KEY), arrayList);
+        b.putParcelableArrayList(getString(R.string.LIST_KEY),arrayList);
         intent.putExtras(b);
         startActivity(intent);
     }

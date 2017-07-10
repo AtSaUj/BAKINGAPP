@@ -7,7 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -18,9 +18,9 @@ import butterknife.ButterKnife;
 
 public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.IngredientHolder> {
     private Context mContext;
-    private ArrayList<Recipes.Ingredients> mIngredients;
+    private List<Recipes.Ingredients> mIngredients;
 
-    public IngredientAdapter(Context context, ArrayList<Recipes.Ingredients> ingredients) {
+    public IngredientAdapter(Context context, List<Recipes.Ingredients> ingredients) {
         mContext = context;
         mIngredients = ingredients;
     }

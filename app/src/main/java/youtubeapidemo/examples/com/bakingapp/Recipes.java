@@ -54,6 +54,10 @@ public class Recipes implements Parcelable {
         return dish_Name;
     }
 
+    public List<Ingredients> getIngredientsArrayList() {
+        return ingredientsArrayList;
+    }
+
     @Override
     public int describeContents() {
         return 0;

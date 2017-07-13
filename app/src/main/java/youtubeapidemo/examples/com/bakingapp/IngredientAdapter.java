@@ -7,7 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import java.util.List;
+import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -18,9 +18,9 @@ import butterknife.ButterKnife;
 
 public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.IngredientHolder> {
     private Context mContext;
-    private List<Recipes.Ingredients> mIngredients;
+    private ArrayList<String> mIngredients;
 
-    public IngredientAdapter(Context context, List<Recipes.Ingredients> ingredients) {
+    public IngredientAdapter(Context context, ArrayList<String> ingredients) {
         mContext = context;
         mIngredients = ingredients;
     }
@@ -28,12 +28,15 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.In
 
     @Override
     public IngredientHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new IngredientHolder(LayoutInflater.from(mContext).inflate(R.layout.ingredient_item, parent, false));
+        return new IngredientHolder(LayoutInflater.from(mContext)
+                .inflate(R.layout.ingredient_item, parent, false));
     }
 
     @Override
     public void onBindViewHolder(IngredientHolder holder, int position) {
-        holder.textView.setText(mIngredients.get(position).getIngredients());
+        String item = mIngredients.get(position);
+        holder.recipe_ingredient.setText(item.substring(0, 1).toUpperCase() + item.substring(1));
+        holder.no_column.setText(position + 1 + ".");
     }
 
     @Override
@@ -41,9 +44,16 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.In
         return mIngredients.size();
     }
 
+    public void changeData(ArrayList<String> arrayList) {
+        mIngredients = arrayList;
+        notifyDataSetChanged();
+    }
+
     public class IngredientHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.recipe_ingredient)
-        TextView textView;
+        TextView recipe_ingredient;
+        @BindView(R.id.no_column)
+        TextView no_column;
 
         public IngredientHolder(View itemView) {
             super(itemView);

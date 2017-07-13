@@ -30,8 +30,8 @@ public class MainActivity extends AppCompatActivity implements RecipeAdapter.Lis
     @BindView(R.id.recycler_view)
     RecyclerView recyclerView;
     ArrayList<Recipes> arrayList;
-    ArrayList<Recipes.Ingredients> arrayList2ingredientsArrayList;
     RecipeAdapter recipeAdapter;
+    private static final int VERTICAL_ITEM_SPACE = 48;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,14 +42,16 @@ public class MainActivity extends AppCompatActivity implements RecipeAdapter.Lis
         progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
         progressDialog.setCancelable(false);
         progressDialog.setIndeterminate(false);
-        progressDialog.setTitle(getString(R.string.please_wait));
+        progressDialog.setTitle(getString(R.string.progress_dialog));
+        progressDialog.setMessage(getString(R.string.please_wait));
         progressDialog.show();
         makeJsonArrayRequest();
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(linearLayoutManager);
-       // recyclerView.addItemDecoration(mDividerItemDecoration);
         recipeAdapter = new RecipeAdapter(this, arrayList);
         recyclerView.setAdapter(recipeAdapter);
+        recyclerView.addItemDecoration(new VerticalSpaceItemDecoration(VERTICAL_ITEM_SPACE));
+   //     recyclerView.addItemDecoration(new DividerItemDecoration(MainActivity.this,R.drawable.divider));
     }
 
     /**
@@ -57,52 +59,26 @@ public class MainActivity extends AppCompatActivity implements RecipeAdapter.Lis
      */
     private void makeJsonArrayRequest() {
         arrayList = new ArrayList<>();
-        arrayList2ingredientsArrayList = new ArrayList<>();
         String mUrlBaking = "https://go.udacity.com/android-baking-app-json";
         JsonArrayRequest req = new JsonArrayRequest(mUrlBaking,
                 new Response.Listener<JSONArray>() {
                     @Override
                     public void onResponse(JSONArray response) {
-                        String ingredientsRequirent = null;
                         try {
-
                             for (int i = 0; i < response.length(); i++) {
                                 JSONObject person = (JSONObject) response.get(i);
                                 String dish_Name = person.getString("name");
                                 int id = person.getInt("id");
                                 int servings = person.getInt("servings");
-                                JSONArray ingredients = person.getJSONArray("ingredients");
-                           //     Log.i(TAG,response.length()+"i="+i);
-                                for (int j = 0; j < ingredients.length(); j++) {
-                                    JSONObject ing = (JSONObject) ingredients.get(j);
-
-                                    ingredientsRequirent = ing.getInt("quantity") +
-                                            ing.getString("measure") +
-                                            ing.getString("ingredient");
-
-                              //      Log.i(TAG,ingredients.length()+"j="+j);
-                              //      Log.i(TAG,ingredientsRequirent);
-                                    arrayList2ingredientsArrayList.add(new Recipes
-                                            .Ingredients(ingredientsRequirent));
-                                }
-
-
-/*
-                                JSONArray steps = person.getJSONArray("Steps");
-                                for (int j = 0; j < ingredients.length(); j++) {
-                                }
-*/
-                                arrayList.add(new Recipes(id, dish_Name, servings,
-                                        arrayList2ingredientsArrayList));
+                                arrayList.add(new Recipes(id, dish_Name, servings));
                             }
-
-                            progressDialog.dismiss();
                         } catch (JSONException e) {
                             e.printStackTrace();
                             Log.i(TAG, "Error: " + e.getMessage());
+                        } finally {
+                            progressDialog.dismiss();
                         }
                         recipeAdapter.changeData(arrayList);
-
                     }
                 }, new Response.ErrorListener() {
             @Override
@@ -110,17 +86,13 @@ public class MainActivity extends AppCompatActivity implements RecipeAdapter.Lis
                 VolleyLog.d(TAG, "Error: " + error.getMessage());
             }
         });
-
         MySingleton.getInstance(this).addToRequestQueue(req);
     }
 
     @Override
     public void onListItemClick(int clickedItemIndex) {
-        Intent intent = new Intent(MainActivity.this,IngredientActivity.class);
-        Bundle b = new Bundle();
-        b.putInt(getString(R.string.POSITION_KEY), clickedItemIndex);
-        b.putParcelableArrayList(getString(R.string.LIST_KEY),arrayList);
-        intent.putExtras(b);
+        Intent intent = new Intent(MainActivity.this, IngredientActivity.class);
+        intent.putExtra(getString(R.string.LIST_KEY), clickedItemIndex);
         startActivity(intent);
     }
 

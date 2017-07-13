@@ -5,4 +5,7 @@
     <string name="POSITION_KEY">position</string>
     <string name="LIST_KEY">arrayList</string>
     <string name="please_wait">Please Wait...</string>
+    <string name="progress_dialog">Loading</string>
+    <string name="previous">previous</string>
+    <string name="next">next</string>
 </resources>

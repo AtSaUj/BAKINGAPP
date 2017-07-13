@@ -40,6 +40,7 @@ class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeViewHolder>
     @Override
     public void onBindViewHolder(RecipeViewHolder holder, int position) {
         holder.title.setText(mRecipes.get(position).getDish_Name());
+        holder.servings.setText(mRecipes.get(position).getServings()+" Servings");
     }
 
     @Override
@@ -58,6 +59,8 @@ class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeViewHolder>
         TextView title;
         @BindView(R.id.card_view)
         CardView cardView;
+        @BindView(R.id.serving)
+        TextView servings;
 
         public RecipeViewHolder(View itemView) {
             super(itemView);

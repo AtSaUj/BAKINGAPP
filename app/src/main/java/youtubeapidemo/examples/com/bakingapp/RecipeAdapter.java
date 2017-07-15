@@ -19,7 +19,8 @@ import butterknife.ButterKnife;
 
 class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeViewHolder> {
     public ArrayList<Recipes> mRecipes;
-    final private ListItemClickListener mListItemClickListener;
+    public ListItemClickListener mListItemClickListener;
+    Context context;
 
 
     public interface ListItemClickListener {
@@ -29,6 +30,7 @@ class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeViewHolder>
     RecipeAdapter(Context context, ArrayList<Recipes> arrayList) {
         mListItemClickListener = (ListItemClickListener) context;
         mRecipes = arrayList;
+        this.context=context;
     }
 
     @Override
@@ -54,7 +56,7 @@ class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeViewHolder>
         notifyDataSetChanged();
     }
 
-    public class RecipeViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public class RecipeViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         @BindView(R.id.title)
         TextView title;
         @BindView(R.id.card_view)

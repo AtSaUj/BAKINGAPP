@@ -1,55 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<fragment xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/detail_ingredient_fragment"
+    android:name="youtubeapidemo.examples.com.bakingapp.DetailIngredientFragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="@dimen/fifteen"
-    android:orientation="vertical"
-    android:paddingLeft="@dimen/ten"
-    android:gravity="center"
-    android:paddingRight="@dimen/ten"
-    android:background="#FFF9C4"
-    android:paddingTop="@dimen/fifteen"
-    tools:context="youtubeapidemo.examples.com.bakingapp.IngredientActivity">
-
-    <android.support.v7.widget.CardView
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:layout_marginBottom="10dp"
-        android:layout_gravity="center"
-        app:cardElevation="2dp"
-
-        app:cardCornerRadius="4dp">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="6dp"
-                android:text="@string/ingredients_head"
-                android:textSize="25sp" />
-
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/recycler_view"
-                android:padding="6dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-
-        </LinearLayout>
-    </android.support.v7.widget.CardView>
-    <Button
-        android:id="@+id/cook_custom_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Start Cooking"
-        android:textAllCaps="true"
-        android:textColor="#ffffff"
-        android:background="@drawable/custom_button_selector" />
-
-</LinearLayout>
+    tools:layout="@layout/fragment_master_list" />

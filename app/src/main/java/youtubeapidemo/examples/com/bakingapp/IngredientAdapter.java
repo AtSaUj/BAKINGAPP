@@ -25,7 +25,6 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.In
         mIngredients = ingredients;
     }
 
-
     @Override
     public IngredientHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         return new IngredientHolder(LayoutInflater.from(mContext)
